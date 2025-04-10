@@ -1,0 +1,15 @@
+[package]
+name = "resume_markdown_to_toml"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.97"
+log = "0.4.27"
+pulldown-cmark = "0.12.2"
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.140"
+serde_yaml = "0.9.34"
+simple_logger = { version = "5.0.0", features = ["colors"] }
+structopt = "0.3.26"
+toml = "0.8.19"

@@ -1,0 +1,58 @@
+[metadata]
+name = "Joseph Mama"
+page_title = "Joseph Mama Resume"
+email = "notarealemailaddress@yahoo.com"
+
+[[data.sections]]
+title = "EXPERIENCE"
+experiences = []
+
+[[data.sections.organizations]]
+title = "Company A"
+short_description = "Team A"
+long_description = ""
+url = "https://company-website.com"
+timeframe = "Start Date - End Date"
+
+[[data.sections.organizations.teams]]
+title = "Team and/or position"
+timeframe = "Start Date - End Date"
+experiences = ["I did thing A", "I also did thing B"]
+
+[[data.sections.organizations.teams]]
+title = "Team and/or position"
+timeframe = "Start Date - End Date"
+experiences = ["I did thing A", "I also did thing B"]
+
+[[data.sections.organizations]]
+title = "Company B"
+short_description = "Team B"
+long_description = ""
+url = "https://company-website.com"
+timeframe = "Start Date - End Date"
+
+[[data.sections.organizations.teams]]
+title = "Team and/or position"
+timeframe = "Start Date - End Date"
+experiences = ["I did thing A", "I also did thing B"]
+
+[[data.sections.organizations.teams]]
+title = "Team and/or position"
+timeframe = "Start Date - End Date"
+experiences = ["I did thing A", "I also did thing B"]
+
+[[data.sections]]
+title = "EDUCATION"
+experiences = []
+
+[[data.sections.organizations]]
+title = "School"
+short_description = ""
+long_description = ""
+url = "https://school-website.edu/"
+timeframe = ""
+
+[[data.sections.organizations.teams]]
+title = "Degree, year"
+timeframe = ""
+experiences = ["What did I do?", "No really, what did I do???"]
