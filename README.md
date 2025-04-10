@@ -20,7 +20,7 @@ JSON, we have options) that's much easier for you to parse.
 ## Usage
 
 ```bash
-cargo run -- --input ./examples/resume.md --output ./examples/resume.toml
+resume_markdown_to_toml --input ./examples/resume.md --output ./examples/resume.toml
 ```
 
 By default `--input` is assumed to be `./resume.md`, `--output` is assumed to
@@ -31,3 +31,19 @@ be `./resume.toml`. The output file's extension implies the format.
 - .yaml
 - .toml
 - .json
+
+## Installation
+
+You can install this repo like so:
+
+```bash
+cargo install --git https://github.com/loremdipso/resume_markdown_to_toml
+```
+
+Or just run it locally via:
+
+```bash
+git clone https://github.com/loremdipso/resume_markdown_to_toml
+cd resume_markdown_to_toml
+cargo run -- --input resume.md --output resume.json
+```
