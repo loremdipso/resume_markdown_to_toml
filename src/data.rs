@@ -12,6 +12,7 @@ pub struct Metadata {
     pub title: Option<String>,
     pub page_title: Option<String>,
     pub email: Option<String>,
+    pub phone: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Default)]

@@ -1,6 +1,34 @@
 use crate::data::{Data, Metadata};
 use anyhow::{anyhow, Result};
+use lazy_static::lazy_static;
 use pulldown_cmark::{Event, HeadingLevel, Parser, Tag, TextMergeStream};
+use regex::Regex;
+
+lazy_static! {
+    static ref KEYWORDS: Vec<Regex> = vec![
+        Regex::new(r"\bjanuary\b").unwrap(),
+        Regex::new(r"\bjan\b").unwrap(),
+        Regex::new(r"\bfebruary\b").unwrap(),
+        Regex::new(r"\bfeb\b").unwrap(),
+        Regex::new(r"\bmarch\b").unwrap(),
+        Regex::new(r"\bmar\b").unwrap(),
+        Regex::new(r"\bapril\b").unwrap(),
+        Regex::new(r"\bapr\b").unwrap(),
+        Regex::new(r"\bmay\b").unwrap(),
+        Regex::new(r"\bjune\b").unwrap(),
+        Regex::new(r"\bjuly\b").unwrap(),
+        Regex::new(r"\baugust\b").unwrap(),
+        Regex::new(r"\baug\b").unwrap(),
+        Regex::new(r"\bseptember\b").unwrap(),
+        Regex::new(r"\bsept\b").unwrap(),
+        Regex::new(r"\boctober\b").unwrap(),
+        Regex::new(r"\boct\b").unwrap(),
+        Regex::new(r"\bnovember\b").unwrap(),
+        Regex::new(r"\bnov\b").unwrap(),
+        Regex::new(r"\bdecember\b").unwrap(),
+        Regex::new(r"\bdec\b").unwrap(),
+    ];
+}
 
 #[derive(Debug, PartialEq)]
 enum Action {
@@ -50,10 +78,18 @@ pub fn parse(content: &str) -> Result<(Metadata, Data)> {
                                 .map(|e| e.trim())
                                 .filter(|e| !e.is_empty())
                                 .collect::<Vec<_>>();
-                            if pieces.len() == 3 {
+                            if pieces.len() >= 2 {
                                 organization.title = pieces[0].into();
                                 organization.short_description = pieces[1].into();
-                                organization.timeframe = pieces[2].into();
+                                for sub_piece in &pieces[2..] {
+                                    if sub_piece.contains("www") {
+                                        organization.url = (*sub_piece).into();
+                                    } else if is_probably_date(*sub_piece) {
+                                        organization.timeframe = (*sub_piece).into();
+                                    } else {
+                                        organization.long_description = (*sub_piece).into();
+                                    }
+                                }
                             } else {
                                 organization.title = pieces[0].to_string();
                             }
@@ -130,4 +166,14 @@ pub fn parse(content: &str) -> Result<(Metadata, Data)> {
     }
 
     return Ok((metadata, data));
+}
+
+fn is_probably_date(value: &str) -> bool {
+    let value = value.to_lowercase();
+    for keyword in KEYWORDS.iter() {
+        if keyword.find(&value).is_some() {
+            return true;
+        }
+    }
+    return false;
 }
