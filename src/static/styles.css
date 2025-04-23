@@ -50,7 +50,6 @@ h3 {
 .team-header {
     display: flex;
     justify-content: space-between;
-
 }
 
 .header .name,
@@ -120,7 +119,6 @@ h3 {
     margin: 0;
     padding: 0;
     list-style: none;
-
 }
 
 .blurbs li {
