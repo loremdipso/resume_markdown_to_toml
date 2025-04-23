@@ -12,6 +12,7 @@ use std::{
 use structopt::StructOpt;
 
 mod data;
+mod html;
 mod parser;
 
 #[derive(Debug, Clone, StructOpt)]
@@ -61,6 +62,10 @@ fn run(options: Opt) -> Result<()> {
     } else if output_str.ends_with(".json") {
         let mut file = File::create(&options.output).expect("Can't open output");
         file.write_all(serde_json::to_string(&Wrapper { metadata, data })?.as_bytes())?;
+    } else if output_str.ends_with(".html") {
+        let html = html::create_html(Wrapper { metadata, data })?;
+        let mut file = File::create(&options.output).expect("Can't open output");
+        file.write_all(html.as_bytes())?;
     } else {
         return Err(anyhow!(
             "Invalid output format. Valid formats: toml, yaml, json."

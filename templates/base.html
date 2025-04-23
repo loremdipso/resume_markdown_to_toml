@@ -1,0 +1,34 @@
+{% import "macros.html" as macros %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{% block head %}
+	{% endblock head %}
+
+	{% block basic_includes %}
+	{% endblock basic_includes %}
+
+	{% block extra_includes %}
+	{% endblock extra_includes %}
+</head>
+
+<body>
+	{% block header %}
+	{% endblock header %}
+
+	{% block contentwrapper %}
+	<div class="content-wrapper">
+		<div class="content">
+			{% block content %}
+			{% endblock content %}
+		</div>
+
+		{% block footer %}
+		{% endblock footer %}
+	</div>
+	{% endblock contentwrapper %}
+</body>
+
+</html>

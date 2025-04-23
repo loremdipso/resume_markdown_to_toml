@@ -1,0 +1,154 @@
+body {
+    font-family: Georgia, sans-serif;
+    padding: 1rem;
+    max-width: 50em;
+    line-height: 1.5;
+    font-size: 1em;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    color: initial;
+}
+
+h3 {
+    text-transform: uppercase;
+}
+
+.subtitle {
+    color: #666;
+    font-family: Bitter, Georgia, serif;
+    font-size: 0.9em;
+}
+
+.extra {
+    margin-left: 2rem;
+}
+
+.period {
+    text-align: right;
+    font-family: sans-serif;
+    font-size: 0.8em;
+    line-height: 2;
+    color: #888;
+}
+
+.contacts {
+    font-size: 0.9em;
+    font-family: sans-serif;
+    margin-left: auto;
+    margin-top: 20px;
+}
+
+.header {
+    column-gap: 20px;
+    flex-wrap: wrap;
+}
+
+.header,
+.team-header {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.header .name,
+.team-header .name {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+.name-section {
+    font-family: Bitter, Georgia, sans-serif;
+
+    h1 {
+        font-size: 3.2rem;
+        color: #0c6fa9;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+        color: #444;
+        font-weight: 400;
+    }
+}
+
+.teams {
+    margin-left: 1rem;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: normal;
+    margin: 0;
+}
+
+h3 {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-family: Bitter, Georgia, sans-serif;
+    color: #0c6fa9;
+    margin-top: 1.6em;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.left {
+    margin-right: 5px;
+}
+
+.right {
+    margin-left: 5px;
+}
+
+.wide {
+    flex-grow: 1;
+}
+
+.label {
+    color: #bbb;
+    text-transform: lowercase;
+}
+
+.blurbs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+}
+
+.blurbs li {
+    --margin: 0.3rem;
+    margin-left: var(--margin);
+    margin-right: var(--margin);
+    margin-bottom: var(--margin);
+    padding: var(--margin);
+    background: #f7f7f7;
+    color: #444;
+}
+
+@media print {
+    body {
+        max-width: unset !important;
+        padding: 0 !important;
+    }
+
+    .team-header * {
+        page-break-inside: avoid;
+        page-break-after: avoid;
+    }
+
+    @page {
+        margin: 0.5in;
+
+        footer {
+            display: none;
+        }
+    }
+}

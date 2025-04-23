@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% import "macros.html" as macros %}
+
+{% block basic_includes %}
+<style>
+    {{- styles -}}
+</style>
+{% endblock basic_includes %}
+
+{% block header %}
+{% endblock header %}
+
+{%- block head -%}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  {% if metadata.page_title %}
+    <title>{{metadata.page_title}}</title>
+  {% endif %}
+{%- endblock head -%}
+
+{% block contentwrapper %}
+    <div class="header">
+        <div class="name-section">
+            <h1>{{- metadata.name -}}</h1>
+            {% if metadata.title %}
+              <h2>{{- metadata.title -}}</h2>
+              {% endif %}
+        </div>
+        {% if metadata.email %}
+            <div class="contacts">
+                {{ metadata.email }}
+                <span class="label">email</span>
+            </div>
+        {% endif %}
+    </div>
+
+    {% for section in data.sections %}
+    <div class="section">
+        <h3>{{ section.title }}</h3>
+        {{- self::experiences(experiences=section.experiences) -}}
+
+        {% for organization in section.organizations %}
+            {{- self::organization(organization=organization) -}}
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% endblock contentwrapper %}
+
+{% macro experiences(experiences) %}
+  {% if experiences %}
+    <ul class="blurbs">
+      {% for experience in experiences %}
+      <li>
+          {{- self::fancy_string(string=experience) -}}
+      </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro experiences %}
+
+{% macro fancy_string(string) %}
+  {% set pieces = string | split(pat=":") %}
+  {% if pieces | length == 1 %}
+    {{- string -}}
+  {% else %}
+    <b>{{ pieces[0] }}</b>:{{ pieces[1] }}
+  {% endif %}
+{% endmacro fancy_string %}
+
+{% macro organization(organization) %}
+  <div class="team-header">
+    <div class="name">
+      {% if organization.url %}
+        <a class="bold left" target="#" href="{{ organization.url }}">
+            {{- organization.title -}}
+        </a>
+      {% else %}
+        <div class="bold left">
+          {{- organization.title -}}
+        </div>
+      {% endif %}
+
+      {% if organization.short_description %}
+        <div>
+          {{- organization.short_description -}}
+        </div>
+      {% endif %}
+
+      {% if organization.timeframe %}
+        <div class="period right wide">
+            {{- organization.timeframe -}}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if organization.long_description %}
+    <div class="subtitle">{{- organization.long_description -}}</div>
+  {% endif %}
+
+  {% for team in organization.teams %}
+    <div class="teams">
+      <div class="team-header">
+        <div class="name">
+          <!-- <span class="label">Team</span> -->
+          <span>{{- team.title -}}</span>
+        </div>
+      </div>
+      {{- self::experiences(experiences=team.experiences) -}}
+    </div>
+  {% endfor %}
+{% endmacro %}

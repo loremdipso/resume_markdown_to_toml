@@ -1,0 +1,100 @@
+{% macro rel_url(path, trailing_slash=false, cachebust=false) %}
+  {%- set url = get_url(path=path, trailing_slash=trailing_slash, cachebust=cachebust) | replace(from=config.base_url, to="") -%}
+  {%- if url is starting_with("//") -%}
+      /{{- url | trim_start_matches(pat="//") -}}
+  {%- else -%}
+      /{{- url -}}
+  {%- endif -%}
+{% endmacro rel_url %}
+
+{% macro anchor_id(path) %}
+  {{- get_url(path=path, trailing_slash=false) | split(pat='/') | last -}}
+{% endmacro anchor_id %}
+
+{% macro script(path, is_async=true, is_module=false) %}
+    <script
+      src="{{ self::rel_url(path=path, cachebust=true) }}"
+      {% if is_async %}async{% endif %}
+      {% if is_module %}type="module"{% endif %}
+      crossorigin="anonymous">
+    </script>
+{% endmacro script %}
+
+{#
+TODO: use this
+{% macro read_time(words) %}
+<span class="reading-time" title="Estimated read time">
+  {% if words < 530 %}
+  1 min read
+  {% else %}
+  {{ words / 265 | round }} min read
+  {% endif %}
+</span>
+{% endmacro read_time %}
+#}
+
+{% macro posts_group(year, pages) %}
+  <div class="posts-group">
+      <a href="/posts/#{{ year }}" class="posts-year" id="{{ year }}">{{ year }}</a>
+
+      <ul class="posts-list">
+          {% for page in pages %}
+          <li class="post-item">
+              <a href="{{ macros::rel_url(path=page.permalink) | safe }}" class="wrappable-container">
+                  <span class="post-title">{{page.title}}</span>
+                  <span class="post-day">{{ page.date | date(format=config.extra.params.dateform_short) }}</span>
+              </a>
+          </li>
+          {% endfor %}
+      </ul>
+  </div>
+{% endmacro posts_group %}
+
+{% macro responsive_image(path, alt, title="", class=false, is_preemptive=false, new_width=0, max_height=0) %}
+    <picture>
+      {% set width = 0 %}
+      {% set height = 0 %}
+
+      {% if new_width > 0 and path is matching("(png|jpg|jpeg|webp)$") %}
+        {% set new_image = resize_image(path=path, width=new_width, op="fit_width", format="webp") %}
+        {% set width = new_image.width %}
+        {% set height = new_image.height %}
+        <source srcset="{{ self::rel_url(path=new_image.url) | safe }}" type="image/webp">
+
+        {# TODO: add avif when that's available #}
+
+        {% set backup_image = resize_image(path=path, width=new_width, op="fit_width") %}
+        {% set path = self::rel_url(path=backup_image.url) %}
+      {% else %}
+        {% set meta = get_image_metadata(path=path) %}
+        {% set width = meta.width %}
+        {% set height = meta.width %}
+      {% endif %} 
+
+      <img src="{{ path | safe }}"
+        alt="{{ alt }}"
+        {% if title %}title="{{ title }}"{% endif %}
+        {% if class %}class="{{ class }}"{% endif %}
+        {% if not is_preemptive %}loading="lazy" decoding="async"{% endif %}
+        {% if max_height %}style="max-height: {{max_height}}px"{% endif %}
+        width="{{ width }}" height="{{ height }}" />
+    </picture>
+{% endmacro responsive_image %}
+
+{% macro period(start, end) %}
+  <div class="period">
+    {{ start }} - {{ end }}
+  </div>
+{% endmacro period %}
+
+{% macro tags(tags) %}
+  {% if tags %}
+  <div class="tags">
+    {% for tag in tags | sort %}
+      <a href="{{get_taxonomy_url(kind='tags', name=tag)}}" class="tag">
+        {{ macros::icon(name="tags") }}{{tag}}
+      </a>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endmacro %}
